@@ -312,3 +312,21 @@ main { grid-area: main; min-width: 0; outline: none; }
 html { overflow-x: clip; }
 .tagline.pencil { min-width: 12rem; max-width: 16rem; white-space: normal; line-height: 1.25; transform: rotate(-2deg); }
 @media (max-width: 900px) { .tagline.pencil { display: none; } }
+
+/* ===== natural wood: real plank wall behind everything ===== */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-color: var(--wood-c, #3b2516);
+  background-image:
+    repeating-linear-gradient(180deg, rgba(0,0,0,0) 0 calc(var(--plank, 168px) - 3px), rgba(0,0,0,.55) calc(var(--plank, 168px) - 3px) var(--plank, 168px)),
+    var(--wood-photo, none);
+  background-size: auto, 1200px auto;
+  background-repeat: repeat, repeat;
+  filter: brightness(.62) saturate(1.05);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 0%, rgba(255,214,160,.18), rgba(0,0,0,0) 55%), radial-gradient(140% 120% at 50% 120%, rgba(0,0,0,.55), rgba(0,0,0,0) 60%);
+}
+.board { background-size: auto, cover !important; }
+@media (max-width: 600px) { body::before { background-size: auto, 800px auto; --plank: 120px; } }
