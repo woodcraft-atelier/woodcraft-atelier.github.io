@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en" data-mode="workshop" data-ink="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Woodcraft Atelier — a workshop made of real wood</title>
+<meta name="description" content="A free, playful woodworking workshop in your browser: species library with Janka hardness, board-foot and cut-list calculators, animated joinery encyclopedia, live finish previewer, moisture calculator, a wooden marimba, puzzles and a carve-your-name generator.">
+<meta name="theme-color" content="#5a3a22">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Woodcraft Atelier — a workshop made of real wood">
+<meta property="og:description" content="Procedurally grown oak, walnut, teak, sheesham & more. Calculators, joinery, finishes, a marimba and puzzles — all hand-planed in the browser. Wood you like to see more?">
+<meta property="og:url" content="https://kumarnikhildeveloperaccount.github.io/woodcraft/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the workbench</a>
+
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="roughEdge" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.04" numOctaves="2" seed="7" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="fiberFx" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.22" numOctaves="3" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="18"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="shop" id="shop">
+<header class="sign board" id="top">
+  <button class="logo" id="logo" type="button" aria-label="Woodcraft Atelier — knock on the sign (try three times)">
+    <span class="logo-end" aria-hidden="true"><img id="logoEnd" alt="" width="54" height="54"></span>
+    <span class="logo-text"><span class="carved big">Woodcraft</span><span class="carved small">Atelier</span></span>
+  </button>
+  <p class="tagline pencil" aria-hidden="true">a workshop made of real wood&nbsp;✎</p>
+  <div class="controls">
+    <div class="ctl">
+      <span class="ctl-label carved" id="speciesLbl">Veneer</span>
+      <div class="species-bar" id="speciesBar" role="radiogroup" aria-labelledby="speciesLbl"></div>
+    </div>
+    <div class="ctl">
+      <span class="ctl-label carved" id="modeLbl">Workshop</span>
+      <div class="mode-bar" id="modeBar" role="radiogroup" aria-labelledby="modeLbl">
+        <button type="button" role="radio" data-mode="workshop" aria-checked="true" title="Daylight workshop">☀ Day</button>
+        <button type="button" role="radio" data-mode="night" aria-checked="false" title="Workshop at night — a lamp follows your cursor">☾ Night</button>
+        <button type="button" role="radio" data-mode="japanese" aria-checked="false" title="Japanese joinery — hinoki & shoji">和 Hinoki</button>
+        <button type="button" role="radio" data-mode="rustic" aria-checked="false" title="Rustic cabin">⛺ Cabin</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="ctl-label carved" id="soundLbl">Sound</span>
+      <button type="button" class="switch" id="soundToggle" role="switch" aria-checked="true" aria-labelledby="soundLbl"><span class="switch-knob"></span></button>
+    </div>
+  </div>
+  <button type="button" class="nav-toggle" id="navToggle" aria-controls="cabinet" aria-expanded="false"><span class="pull" aria-hidden="true"></span><span>Drawers</span></button>
+</header>
+
+<nav class="cabinet board" id="cabinet" aria-label="Workshop drawers">
+  <p class="cab-title carved">Tool chest</p>
+  <ul class="drawers">
+    <li><button type="button" class="drawer" data-view="home"><span class="pull" aria-hidden="true"></span><span class="dl">Workbench</span><span class="dn pencil" aria-hidden="true">home</span></button></li>
+    <li><button type="button" class="drawer" data-view="species"><span class="pull" aria-hidden="true"></span><span class="dl">Species library</span><span class="dn pencil" aria-hidden="true">11 woods</span></button></li>
+    <li><button type="button" class="drawer" data-view="calc"><span class="pull" aria-hidden="true"></span><span class="dl">Lumber &amp; moisture</span><span class="dn pencil" aria-hidden="true">calculators</span></button></li>
+    <li><button type="button" class="drawer" data-view="cutlist"><span class="pull" aria-hidden="true"></span><span class="dl">Cut-list optimizer</span><span class="dn pencil" aria-hidden="true">less waste</span></button></li>
+    <li><button type="button" class="drawer" data-view="joinery"><span class="pull" aria-hidden="true"></span><span class="dl">Joinery</span><span class="dn pencil" aria-hidden="true">13 joints</span></button></li>
+    <li><button type="button" class="drawer" data-view="finish"><span class="pull" aria-hidden="true"></span><span class="dl">Finishes &amp; stains</span><span class="dn pencil" aria-hidden="true">wipe it on</span></button></li>
+    <li><button type="button" class="drawer" data-view="marimba"><span class="pull" aria-hidden="true"></span><span class="dl">Marimba</span><span class="dn pencil" aria-hidden="true">play me</span></button></li>
+    <li><button type="button" class="drawer" data-view="puzzles"><span class="pull" aria-hidden="true"></span><span class="dl">Puzzle corner</span><span class="dn pencil" aria-hidden="true">slide &amp; tangram</span></button></li>
+    <li><button type="button" class="drawer" data-view="carve"><span class="pull" aria-hidden="true"></span><span class="dl">Carve your name</span><span class="dn pencil" aria-hidden="true">PNG</span></button></li>
+    <li><button type="button" class="drawer" data-view="about"><span class="pull" aria-hidden="true"></span><span class="dl">About / maker</span><span class="dn pencil" aria-hidden="true">hello</span></button></li>
+  </ul>
+  <p class="cab-foot pencil" aria-hidden="true">measure twice ✎ click once</p>
+</nav>
+
+<main id="main" tabindex="-1">
+
+<!-- ============ HOME ============ -->
+<section class="view" id="view-home" aria-labelledby="h-home">
+  <div class="hero board">
+    <div class="hero-copy">
+      <p class="eyebrow pencil">No. 001 — hand-planed in your browser</p>
+      <h1 id="h-home" class="carved huge">Woodcraft Atelier</h1>
+      <p class="lede">A workshop where every panel is grown from code: real grain, rings, knots and rays — eleven species, no trees harmed. Calculate lumber, pack cut lists, assemble joints, test finishes, play a marimba, and carve your name.</p>
+      <p class="joke-line" id="jokeLine" aria-live="polite">Wood you like to see more?</p>
+      <div class="hero-actions">
+        <button type="button" class="btn" data-go="species">Browse the timber rack</button>
+        <button type="button" class="btn ghost" id="jokeBtn">Another pun, please</button>
+        <button type="button" class="btn ghost" id="knockBtn" aria-describedby="knockHint">Knock on wood</button>
+      </div>
+      <p class="hint pencil" id="knockHint">(knock pitch depends on the species density — try ebony vs pine)</p>
+    </div>
+    <figure class="hero-log" aria-label="End-grain cross-section of the current species">
+      <div class="log-slice" id="heroEnd"><img id="heroEndImg" alt="" width="320" height="320"></div>
+      <figcaption class="pencil" id="heroEndCap">White Oak · end grain</figcaption>
+    </figure>
+  </div>
+
+  <div class="tiles">
+    <button type="button" class="tile board" data-go="calc"><span class="tile-ic" aria-hidden="true">📐</span><span class="carved">Board feet &amp; m³</span><span class="tile-sub">Imperial, metric, cost, weight</span></button>
+    <button type="button" class="tile board" data-go="cutlist"><span class="tile-ic" aria-hidden="true">🪚</span><span class="carved">Cut-list optimizer</span><span class="tile-sub">Packs parts onto boards with kerf</span></button>
+    <button type="button" class="tile board" data-go="joinery"><span class="tile-ic" aria-hidden="true">🧩</span><span class="carved">Joinery atlas</span><span class="tile-sub">13 joints that assemble themselves</span></button>
+    <button type="button" class="tile board" data-go="finish"><span class="tile-ic" aria-hidden="true">🖌️</span><span class="carved">Finish previewer</span><span class="tile-sub">Rub oil onto a live plank</span></button>
+    <button type="button" class="tile board" data-go="marimba"><span class="tile-ic" aria-hidden="true">🎶</span><span class="carved">Rosewood marimba</span><span class="tile-sub">Two octaves, keyboard-ready</span></button>
+    <button type="button" class="tile board" data-go="carve"><span class="tile-ic" aria-hidden="true">✍️</span><span class="carved">Carve your name</span><span class="tile-sub">Chisel it, download the PNG</span></button>
+  </div>
+
+  <div class="ply-card plywood-edge">
+    <div class="ply-face board">
+      <p class="carved">We'd tell you a joke about plywood, but it's layered.</p>
+      <p class="small-note">Nine plies of cross-banded veneer, glued at right angles so it barely moves with humidity. The joke, however, still warps.</p>
+    </div>
+  </div>
+
+  <div class="shop-notes paper pinned">
+    <h2 class="pen">Shop rules (pinned above the bench)</h2>
+    <ol>
+      <li>Grain runs <em>with</em> the length. Arguing with it is how tear-out is born.</li>
+      <li>Wood moves. Design for it, or it will redesign for you.</li>
+      <li>Sharp tools are safe tools. Dull ones are just loud.</li>
+      <li>Every scrap is a future spline, wedge or coaster.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ SPECIES ============ -->
+<section class="view" id="view-species" aria-labelledby="h-species" hidden>
+  <header class="view-head board">
+    <h2 id="h-species" class="carved">Species library</h2>
+    <p class="sub">Each swatch is grown live from noise — rings, pores, rays and knots tuned per species. Tap a board to read its label.</p>
+    <div class="row-ctl">
+      <label class="field"><span>Find</span><input type="search" id="spSearch" placeholder="e.g. teak, furniture, hard…" autocomplete="off"></label>
+      <label class="field"><span>Sort by</span>
+        <select id="spSort">
+          <option value="name">Name</option>
+          <option value="janka">Janka hardness</option>
+          <option value="density">Density</option>
+          <option value="work">Workability</option>
+          <option value="sustain">Sustainability</option>
+          <option value="price">Price</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <div class="species-grid" id="speciesGrid" aria-live="polite"></div>
+  <p class="empty pencil" id="spEmpty" hidden>No wood matches that. Even the termites are confused.</p>
+  <div class="paper pinned chart-card">
+    <h3 class="pen">Janka hardness — how hard you must swear to dent it</h3>
+    <div class="janka" id="jankaChart" role="img" aria-label="Bar chart of Janka hardness by species"></div>
+    <p class="small-note">Janka = force (lbf) to press an 11.28 mm steel ball halfway into the wood. Figures are typical published values; individual boards vary.</p>
+  </div>
+  <aside class="sp-detail board" id="spDetail" aria-live="polite" hidden></aside>
+</section>
+
+<!-- ============ CALCULATORS ============ -->
+<section class="view" id="view-calc" aria-labelledby="h-calc" hidden>
+  <header class="view-head board">
+    <h2 id="h-calc" class="carved">Lumber &amp; moisture calculators</h2>
+    <p class="sub">Board feet, cubic volume, cost and weight — then find out how much your panel will swell next monsoon.</p>
+  </header>
+  <div class="calc-grid">
+    <form class="board calc" id="bfForm" onsubmit="return false" aria-labelledby="h-bf">
+      <h3 id="h-bf" class="carved">Board-foot &amp; volume</h3>
+      <div class="seg" role="radiogroup" aria-label="Units" id="bfUnits">
+        <button type="button" role="radio" aria-checked="true" data-u="imp">Imperial (in / ft)</button>
+        <button type="button" role="radio" aria-checked="false" data-u="met">Metric (mm / m)</button>
+      </div>
+      <div class="fields">
+        <label class="field"><span>Thickness <b id="bfThickU">in</b></span><input type="number" id="bfThick" min="0" step="any" value="1"></label>
+        <label class="field"><span>Width <b id="bfWidthU">in</b></span><input type="number" id="bfWidth" min="0" step="any" value="6"></label>
+        <label class="field"><span>Length <b id="bfLengthU">ft</b></span><input type="number" id="bfLength" min="0" step="any" value="8"></label>
+        <label class="field"><span>Quantity</span><input type="number" id="bfQty" min="1" step="1" value="4"></label>
+        <label class="field"><span>Species</span><select id="bfSpecies"></select></label>
+        <label class="field"><span>Price <b id="bfPriceU">per board foot</b></span><input type="number" id="bfPrice" min="0" step="any" value="9"></label>
+        <label class="field"><span>Waste allowance %</span><input type="number" id="bfWaste" min="0" max="100" step="1" value="15"></label>
+        <label class="field"><span>Currency symbol</span><input type="text" id="bfCur" maxlength="3" value="$"></label>
+      </div>
+      <div class="bf-viz" id="bfViz" aria-hidden="true"></div>
+      <output class="readout" id="bfOut" for="bfThick bfWidth bfLength bfQty bfPrice"></output>
+      <div class="btn-row">
+        <button type="button" class="btn" id="bfAdd">Add to lumber order</button>
+        <button type="button" class="btn ghost" id="bfClear">Clear order</button>
+      </div>
+      <div class="order paper" aria-live="polite">
+        <h4 class="pen">Lumber order</h4>
+        <ul id="bfList"></ul>
+        <p class="order-total" id="bfTotal"></p>
+      </div>
+    </form>
+
+    <form class="board calc" id="mcForm" onsubmit="return false" aria-labelledby="h-mc">
+      <h3 id="h-mc" class="carved">Moisture &amp; wood movement</h3>
+      <p class="small-note">Uses the USDA Wood Handbook (Hailwood–Joseph) equilibrium-moisture formula and each species' tangential/radial shrinkage.</p>
+      <div class="fields">
+        <label class="field"><span>Species</span><select id="mcSpecies"></select></label>
+        <label class="field"><span>Board width</span><input type="number" id="mcWidth" min="0" step="any" value="300"></label>
+        <label class="field"><span>Unit</span><select id="mcUnit"><option value="mm">mm</option><option value="in">inches</option></select></label>
+        <label class="field"><span>Grain</span><select id="mcCut"><option value="flat">Flat-sawn (tangential)</option><option value="quarter">Quarter-sawn (radial)</option></select></label>
+        <label class="field"><span>Temperature °C</span><input type="number" id="mcTemp" step="1" value="24"></label>
+        <label class="field range"><span>Dry-season humidity <b id="mcRH1v">30%</b></span><input type="range" id="mcRH1" min="5" max="95" value="30"></label>
+        <label class="field range"><span>Humid-season humidity <b id="mcRH2v">80%</b></span><input type="range" id="mcRH2" min="5" max="95" value="80"></label>
+      </div>
+      <div class="mc-viz" id="mcViz" aria-hidden="true"><div class="mc-frame"><div class="mc-panel" id="mcPanel"></div></div></div>
+      <output class="readout" id="mcOut"></output>
+    </form>
+  </div>
+</section>
+
+<!-- ============ CUT LIST ============ -->
+<section class="view" id="view-cutlist" aria-labelledby="h-cut" hidden>
+  <header class="view-head board">
+    <h2 id="h-cut" class="carved">Cut-list optimizer</h2>
+    <p class="sub">List your stock boards and the parts you need. We pack them guillotine-style (every cut goes edge to edge, like a real saw), accounting for the blade kerf.</p>
+  </header>
+  <div class="cut-grid">
+    <div class="board cut-in">
+      <h3 class="carved">Stock boards</h3>
+      <div class="tbl-wrap"><table class="tbl" aria-label="Stock boards">
+        <thead><tr><th scope="col">Label</th><th scope="col">Length mm</th><th scope="col">Width mm</th><th scope="col">Qty</th><th scope="col"><span class="sr">Remove</span></th></tr></thead>
+        <tbody id="clStock"></tbody>
+      </table></div>
+      <button type="button" class="btn small" id="clAddStock">+ Add board</button>
+      <h3 class="carved">Parts</h3>
+      <div class="tbl-wrap"><table class="tbl" aria-label="Parts">
+        <thead><tr><th scope="col">Part</th><th scope="col">Length mm</th><th scope="col">Width mm</th><th scope="col">Qty</th><th scope="col"><span class="sr">Remove</span></th></tr></thead>
+        <tbody id="clParts"></tbody>
+      </table></div>
+      <button type="button" class="btn small" id="clAddPart">+ Add part</button>
+      <div class="fields two">
+        <label class="field"><span>Saw kerf mm</span><input type="number" id="clKerf" min="0" max="10" step="0.1" value="3.2"></label>
+        <div class="field"><span id="clGrainLbl">Respect grain (no rotation)</span><button type="button" class="switch" id="clGrain" role="switch" aria-checked="true" aria-labelledby="clGrainLbl"><span class="switch-knob"></span></button></div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn" id="clRun">Optimize &amp; saw</button>
+        <button type="button" class="btn ghost" id="clReset">Sample project</button>
+        <button type="button" class="btn ghost" id="clExport">Export JSON</button>
+        <button type="button" class="btn ghost" id="clImportBtn">Import JSON</button>
+        <input type="file" id="clImport" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <div class="board cut-out">
+      <h3 class="carved">Layout</h3>
+      <div class="readout" id="clSummary" aria-live="polite">Press “Optimize &amp; saw”. The offcuts are getting nervous.</div>
+      <div class="cl-result" id="clResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOINERY ============ -->
+<section class="view" id="view-joinery" aria-labelledby="h-join" hidden>
+  <header class="view-head board">
+    <h2 id="h-join" class="carved">Joinery encyclopedia</h2>
+    <p class="sub">Pick a joint and watch it assemble. Strength, difficulty, tools and where to use it — no glue squeeze-out on your screen, promise.</p>
+  </header>
+  <div class="join-grid">
+    <div class="joint-list board" id="jointList" role="listbox" aria-label="Joints"></div>
+    <div class="joint-main board">
+      <h3 class="carved" id="jointTitle">Mortise &amp; tenon</h3>
+      <div class="joint-stage" id="jointStage"></div>
+      <div class="btn-row">
+        <button type="button" class="btn" id="jointAssemble">Assemble</button>
+        <button type="button" class="btn ghost" id="jointExplode">Explode</button>
+        <div class="inline-switch"><span id="jointLoopLbl">Loop</span><button type="button" class="switch" id="jointLoop" role="switch" aria-checked="false" aria-labelledby="jointLoopLbl"><span class="switch-knob"></span></button></div>
+      </div>
+      <div class="joint-info paper" id="jointInfo" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINISH ============ -->
+<section class="view" id="view-finish" aria-labelledby="h-fin" hidden>
+  <header class="view-head board">
+    <h2 id="h-fin" class="carved">Finish &amp; stain guide</h2>
+    <p class="sub">Drag across the plank to rub the finish on with a rag (you'll hear the sanding first). Or press “Wipe it all” if you're in a hurry.</p>
+  </header>
+  <div class="fin-grid">
+    <div class="board fin-stage">
+      <canvas id="fiCanvas" width="900" height="300" aria-label="Plank preview. Drag to apply the finish." role="img"></canvas>
+      <div class="btn-row">
+        <button type="button" class="btn" id="fiWipe">Wipe it all</button>
+        <button type="button" class="btn ghost" id="fiStrip">Strip &amp; sand</button>
+        <div class="inline-switch"><span id="fiSplitLbl">Before / after split</span><button type="button" class="switch" id="fiSplit" role="switch" aria-checked="false" aria-labelledby="fiSplitLbl"><span class="switch-knob"></span></button></div>
+      </div>
+    </div>
+    <div class="board fin-ctl">
+      <div class="fields">
+        <label class="field"><span>Wood</span><select id="fiSpecies"></select></label>
+        <label class="field"><span>Stain</span><select id="fiStain"></select></label>
+        <label class="field"><span>Finish</span><select id="fiFinish"></select></label>
+        <label class="field range"><span>Coats <b id="fiCoatsV">2</b></span><input type="range" id="fiCoats" min="1" max="5" value="2"></label>
+        <label class="field range"><span>Sheen <b id="fiSheenV">auto</b></span><input type="range" id="fiSheen" min="0" max="100" value="-1"></label>
+      </div>
+      <div class="paper fin-info" id="fiInfo" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="paper pinned">
+    <h3 class="pen">Finishing in one breath</h3>
+    <p>Sand up through the grits (120 → 150 → 180), raise the grain with a damp cloth, knock it back with 220, dust off, test on an offcut, then thin coats beat thick ones every single time. Blotchy pine or cherry? A wash coat of dewaxed shellac first.</p>
+  </div>
+</section>
+
+<!-- ============ MARIMBA ============ -->
+<section class="view" id="view-marimba" aria-labelledby="h-mar" hidden>
+  <header class="view-head board">
+    <h2 id="h-mar" class="carved">The rosewood marimba</h2>
+    <p class="sub">Sheesham bars over brass resonators. Click, tap, or use your keyboard: <kbd>Z</kbd>–<kbd>M</kbd> lower octave, <kbd>Q</kbd>–<kbd>U</kbd> upper, <kbd>S D G H J</kbd> and <kbd>2 3 5 6 7</kbd> for sharps, <kbd>I</kbd> for high C.</p>
+  </header>
+  <div class="marimba-wrap board">
+    <div class="marimba" id="marimba" role="group" aria-label="Marimba keys"></div>
+  </div>
+  <div class="btn-row center">
+    <button type="button" class="btn" id="mbDemo">Play a little tune</button>
+    <button type="button" class="btn ghost" id="mbStop">Stop</button>
+  </div>
+  <p class="hint pencil center" id="mbHint">Pro tip: marimba bars are thinned under the middle so the 4th harmonic rings in tune. Your bars are thinned with math.</p>
+</section>
+
+<!-- ============ PUZZLES ============ -->
+<section class="view" id="view-puzzles" aria-labelledby="h-puz" hidden>
+  <header class="view-head board">
+    <h2 id="h-puz" class="carved">Wooden puzzle corner</h2>
+    <p class="sub">A sliding-block puzzle with carved tiles, and a seven-piece tangram cut from a single square of maple and walnut.</p>
+  </header>
+  <div class="puz-grid">
+    <div class="board puz">
+      <h3 class="carved">Sliding blocks</h3>
+      <div class="btn-row">
+        <label class="field inline"><span>Size</span><select id="spSize"><option value="3">3 × 3</option><option value="4" selected>4 × 4</option></select></label>
+        <button type="button" class="btn small" id="spShuffle">Shuffle</button>
+      </div>
+      <div class="slide-board" id="spBoard" role="grid" aria-label="Sliding puzzle. Use arrow keys to slide tiles into the gap."></div>
+      <p class="readout small"><span>Moves: <b id="spMoves">0</b></span> · <span>Time: <b id="spTime">0:00</b></span> · <span>Best: <b id="spBest">—</b></span></p>
+    </div>
+    <div class="board puz">
+      <h3 class="carved">Tangram</h3>
+      <div class="btn-row">
+        <label class="field inline"><span>Shape</span><select id="tgTarget"></select></label>
+        <button type="button" class="btn small" id="tgRotate">Rotate 45°</button>
+        <button type="button" class="btn small" id="tgFlip">Flip</button>
+        <button type="button" class="btn small ghost" id="tgReset">Scatter</button>
+      </div>
+      <svg class="tangram" id="tgSvg" viewBox="0 0 16 12" role="application" aria-label="Tangram board. Drag pieces; select a piece then press R to rotate, F to flip, arrow keys to nudge."></svg>
+      <p class="readout small" id="tgStatus" aria-live="polite">Drag the pieces onto the shadow. Double-click (or R) to rotate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARVE ============ -->
+<section class="view" id="view-carve" aria-labelledby="h-carve" hidden>
+  <header class="view-head board">
+    <h2 id="h-carve" class="carved">Carve your name</h2>
+    <p class="sub">Type it, pick a wood and a chisel style, then watch it get carved — V-groove shadows, inlay and all. Download the PNG for your workshop door.</p>
+  </header>
+  <div class="carve-grid">
+    <div class="board carve-stage">
+      <canvas id="cvCanvas" width="1200" height="400" role="img" aria-label="Plank with your carved text"></canvas>
+    </div>
+    <div class="board carve-ctl">
+      <div class="fields">
+        <label class="field wide"><span>Text</span><input type="text" id="cvText" maxlength="28" value="Kumar's Workshop"></label>
+        <label class="field"><span>Wood</span><select id="cvSpecies"></select></label>
+        <label class="field"><span>Lettering</span><select id="cvFont">
+          <option value="serif">Classic serif</option>
+          <option value="script">Flowing script</option>
+          <option value="block">Sign-painter block</option>
+          <option value="mono">Stencil mono</option>
+        </select></label>
+        <label class="field"><span>Inlay</span><select id="cvInlay">
+          <option value="none">None (bare cut)</option>
+          <option value="brass">Brass</option>
+          <option value="ebony">Ebony</option>
+          <option value="turquoise">Turquoise epoxy</option>
+          <option value="gold">Gold leaf</option>
+        </select></label>
+        <label class="field range"><span>Depth <b id="cvDepthV">4</b></span><input type="range" id="cvDepth" min="1" max="8" value="4"></label>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn" id="cvCarve">Carve it</button>
+        <button type="button" class="btn ghost" id="cvDownload">Download PNG</button>
+      </div>
+      <p class="hint pencil">Splinter-free guarantee. Chisel sounds included at no extra charge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="view" id="view-about" aria-labelledby="h-about" hidden>
+  <header class="view-head board">
+    <h2 id="h-about" class="carved">About the maker</h2>
+    <p class="sub">Open the cabinet door. It creaks — we left the hinges unoiled for authenticity.</p>
+  </header>
+  <div class="about-cab">
+    <div class="about-inside paper">
+      <h3 class="pen">Designed &amp; built by Kumar Nikhil</h3>
+      <p>Woodcraft Atelier is a love letter to sawdust: a free, fully client-side workshop with no sign-up, no trackers and no API keys. Every wood surface here is generated procedurally — fBm noise for the growth rings, stretched noise for fibres and pores, knots that bend the rings around them, and SVG turbulence for the fine texture. All sounds are synthesized live with Web Audio.</p>
+      <ul class="links">
+        <li><a href="https://kumarnikhildeveloperaccount.github.io/" target="_blank" rel="noopener">Portfolio</a></li>
+        <li><a href="https://www.linkedin.com/in/kumar-nikhil-1000a9192/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="mailto:nkashyapnikhilnk@gmail.com">Email</a></li>
+        <li><a href="https://kumarnikhildeveloperaccount.github.io/" target="_blank" rel="noopener">More projects by Kumar Nikhil →</a></li>
+      </ul>
+      <p class="small-note">Data are typical published reference values (rounded) and sample projects are fictional. Wood is wonderfully inconsistent — check your actual boards.</p>
+      <p class="gratitude">With gratitude to God — Om Namah Paarvati Pateh, Har Har Mahadev. May God bless you and everyone.</p>
+    </div>
+    <button type="button" class="about-door board" id="aboutDoor" aria-expanded="false" aria-label="Open the cabinet door">
+      <span class="hinge h1" aria-hidden="true"></span><span class="hinge h2" aria-hidden="true"></span>
+      <span class="door-panel" aria-hidden="true"></span>
+      <span class="door-knob" aria-hidden="true"></span>
+      <span class="door-label carved">Open me</span>
+    </button>
+  </div>
+</section>
+</main>
+
+<footer class="foot board">
+  <p class="carved foot-joke" id="footJoke">Wood you like to see more?</p>
+  <p>Designed &amp; built by <strong>Kumar Nikhil</strong> ·
+    <a href="https://kumarnikhildeveloperaccount.github.io/" target="_blank" rel="noopener">Portfolio</a> ·
+    <a href="https://www.linkedin.com/in/kumar-nikhil-1000a9192/" target="_blank" rel="noopener">LinkedIn</a> ·
+    <a href="mailto:nkashyapnikhilnk@gmail.com">Email</a> ·
+    <a href="https://kumarnikhildeveloperaccount.github.io/" target="_blank" rel="noopener">More projects by Kumar Nikhil →</a></p>
+  <p class="gratitude">With gratitude to God — Om Namah Paarvati Pateh, Har Har Mahadev. May God bless you and everyone.</p>
+  <p class="small-note">© <span id="year">2026</span> Woodcraft Atelier · 100% client-side · no trees, trackers or cookies were harmed.</p>
+</footer>
+</div>
+
+<canvas class="dust" id="dust" aria-hidden="true"></canvas>
+<div class="lamp" id="lamp" aria-hidden="true"></div>
+<div class="planer" id="planer" aria-hidden="true"><div class="planer-tex" id="planerTex"></div><div class="plane-tool"><span></span></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="woodpecker" id="woodpecker" aria-hidden="true">🐦</div>
+
+<script src="js/wood.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/library.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/cutlist.js"></script>
+<script src="js/joinery.js"></script>
+<script src="js/finish.js"></script>
+<script src="js/marimba.js"></script>
+<script src="js/puzzles.js"></script>
+<script src="js/carve.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "Woodcraft Atelier — a workshop made of real wood",
+  "short_name": "Woodcraft",
+  "description": "Free, client-side woodworking workshop: species library, board-foot & cut-list calculators, joinery, finishes, marimba, puzzles and carve-your-name.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#3b2516",
+  "theme_color": "#5a3a22",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
