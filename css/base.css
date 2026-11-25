@@ -328,5 +328,15 @@ body::after {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background: radial-gradient(120% 90% at 50% 0%, rgba(255,214,160,.18), rgba(0,0,0,0) 55%), radial-gradient(140% 120% at 50% 120%, rgba(0,0,0,.55), rgba(0,0,0,0) 60%);
 }
-.board { background-size: auto, cover !important; }
+.board { background-size: auto, 1100px auto !important; }
 @media (max-width: 600px) { body::before { background-size: auto, 800px auto; --plank: 120px; } }
+
+/* ===== natural finish tuning: calmer, true-to-life timber ===== */
+.board, .drawer, .btn, .door-panel, .mb-bar, .bf-board { image-rendering: auto; }
+.board { filter: saturate(.78) contrast(.96); }
+.board > * { filter: none; }
+.board::after { content: none !important; }
+html[data-species="walnut"] .board, html[data-species="sheesham"] .board, html[data-species="mahogany"] .board { filter: saturate(.62) brightness(.96); }
+html[data-species="ebony"] .board { filter: saturate(.7) brightness(1.08); }
+body::before { filter: brightness(.5) saturate(.7) blur(.3px); }
+.drawer { background-size: auto, 900px auto !important; filter: saturate(.8); }
