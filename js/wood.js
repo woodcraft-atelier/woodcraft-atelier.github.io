@@ -204,7 +204,7 @@
     if (!imgCache[name]) imgCache[name] = new Promise(function (res, rej) {
       var im = new Image(); im.decoding = 'async';
       im.onload = function () { res(im); }; im.onerror = rej;
-      im.src = 'img/' + name + (webp ? '.webp' : '.jpg') + '?v=2';
+      im.src = 'img/' + name + (webp ? '.webp' : '.jpg') + '?v=3';
     });
     return imgCache[name];
   }
@@ -235,7 +235,7 @@
     if (!cache[key]) cache[key] = photoCanvas(id, w, h, opt).then(toURL, function () { return toURL(make(id, w, h, opt)); });
     return cache[key];
   }
-  function photoURL(id) { return 'img/' + (PHOTO[id] || 'white-oak') + (webp ? '.webp' : '.jpg') + '?v=2'; }
+  function photoURL(id) { return 'img/' + (PHOTO[id] || 'white-oak') + (webp ? '.webp' : '.jpg') + '?v=3'; }
   function endURL(id, size) {
     var key = 'end:' + id + ':' + size;
     if (!cache[key]) {
