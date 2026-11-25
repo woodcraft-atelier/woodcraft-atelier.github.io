@@ -307,3 +307,8 @@ main { grid-area: main; min-width: 0; outline: none; }
   34%, 42%, 50% { transform: translate(45vw, 0) rotate(12deg); } 38%, 46%, 54% { transform: translate(45vw, 0) rotate(-14deg); }
   100% { transform: translate(115vw, -120px) rotate(-6deg); }
 }
+
+/* polish: tagline on one/two lines, all-device hardening */
+html { overflow-x: clip; }
+.tagline.pencil { min-width: 12rem; max-width: 16rem; white-space: normal; line-height: 1.25; transform: rotate(-2deg); }
+@media (max-width: 900px) { .tagline.pencil { display: none; } }
