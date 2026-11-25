@@ -83,8 +83,10 @@
   /* ---------- veneer (species) ---------- */
   function applyTexture(id) {
     var alt = WC.wood.isDark(id) ? 'maple' : 'walnut';
-    return Promise.all([WC.wood.url(id, 640, 320), WC.wood.endURL(id, 96), WC.wood.url(alt, 320, 160), WC.wood.endURL(id, 320)]).then(function (u) {
+    var big = Math.min(1600, Math.round(Math.max(900, (window.innerWidth || 1200) * Math.min(window.devicePixelRatio || 1, 2) * 0.6)));
+    return Promise.all([WC.wood.url(id, big, Math.round(big / 2)), WC.wood.endURL(id, 96), WC.wood.url(alt, 640, 320), WC.wood.endURL(id, 320)]).then(function (u) {
       root.style.setProperty('--wood', 'url("' + u[0] + '")');
+      root.style.setProperty('--wood-photo', 'url("' + WC.wood.photo(id) + '")');
       root.style.setProperty('--wood-alt', 'url("' + u[2] + '")');
       root.style.setProperty('--wood-c', WC.wood.avg(id));
       root.dataset.ink = WC.wood.isDark(id) ? 'light' : 'dark';

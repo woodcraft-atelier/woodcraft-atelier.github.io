@@ -194,11 +194,48 @@
       } else res(canvas.toDataURL('image/jpeg', 0.9));
     });
   }
+  /* ---- real, natural wood photography (generated macro textures) ---- */
+  var PHOTO = { oak: 'white-oak', walnut: 'walnut', cherry: 'black-cherry', maple: 'hard-maple', teak: 'teak', sheesham: 'sheesham',
+    mahogany: 'mahogany', pine: 'white-pine', ebony: 'gaboon-ebony', bamboo: 'moso-bamboo', hinoki: 'hard-maple', rustic: 'white-pine', burl: 'walnut' };
+  var TONE = { hinoki: 'saturate(.55) brightness(1.12) sepia(.15)', rustic: 'sepia(.35) saturate(.85) brightness(.82) contrast(1.08)', burl: 'contrast(1.15) saturate(1.15)' };
+  var webp = (function () { try { var c = document.createElement('canvas'); return c.toDataURL('image/webp').indexOf('data:image/webp') === 0; } catch (e) { return false; } })();
+  var imgCache = {};
+  function loadPhoto(name) {
+    if (!imgCache[name]) imgCache[name] = new Promise(function (res, rej) {
+      var im = new Image(); im.decoding = 'async';
+      im.onload = function () { res(im); }; im.onerror = rej;
+      im.src = 'img/' + name + (webp ? '.webp' : '.jpg');
+    });
+    return imgCache[name];
+  }
+  function photoCanvas(id, w, h, opt) {
+    var name = PHOTO[id] || 'white-oak';
+    return loadPhoto(name).then(function (im) {
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var g = c.getContext('2d');
+      var seed = (opt && opt.seed) || 0, iw = im.naturalWidth, ih = im.naturalHeight;
+      /* choose a crop window: keep grain direction (horizontal), vary offset per surface so planks never repeat */
+      var scale = Math.max(w / iw, h / ih) * (1.05 + hash(seed, 3, 7) * 0.5);
+      var cw = w / scale, ch = h / scale;
+      var sx = hash(seed, 1, 5) * Math.max(0, iw - cw), sy = hash(seed, 2, 9) * Math.max(0, ih - ch);
+      if (TONE[id] && 'filter' in g) g.filter = TONE[id];
+      var flip = hash(seed, 4, 11) > 0.5;
+      if (flip) { g.translate(w, 0); g.scale(-1, 1); }
+      g.drawImage(im, sx, sy, cw, ch, 0, 0, w, h);
+      g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none';
+      /* subtle hand-rubbed finish: soft sheen + micro variance so it reads as a physical plank */
+      var sh = g.createLinearGradient(0, 0, w, h);
+      sh.addColorStop(0, 'rgba(255,240,215,.10)'); sh.addColorStop(.45, 'rgba(255,255,255,0)'); sh.addColorStop(1, 'rgba(0,0,0,.10)');
+      g.fillStyle = sh; g.fillRect(0, 0, w, h);
+      return c;
+    });
+  }
   function url(id, w, h, opt) {
     var key = id + ':' + w + 'x' + h + ':' + ((opt && opt.seed) || 0);
-    if (!cache[key]) cache[key] = toURL(make(id, w, h, opt));
+    if (!cache[key]) cache[key] = photoCanvas(id, w, h, opt).then(toURL, function () { return toURL(make(id, w, h, opt)); });
     return cache[key];
   }
+  function photoURL(id) { return 'img/' + (PHOTO[id] || 'white-oak') + (webp ? '.webp' : '.jpg'); }
   function endURL(id, size) {
     var key = 'end:' + id + ':' + size;
     if (!cache[key]) {
@@ -215,5 +252,5 @@
     return 'rgb(' + [0, 1, 2].map(function (k) { return Math.round(p.light[k] + (p.dark[k] - p.light[k]) * t); }).join(',') + ')';
   }
 
-  WC.wood = { P: P, make: make, endGrain: endGrain, url: url, endURL: endURL, avg: avg, isDark: function (id) { return !!(P[id] && P[id].dk); }, noise: noise, hash: hash };
+  WC.wood = { P: P, photo: photoURL, preload: function () { Object.keys(PHOTO).forEach(function (k) { loadPhoto(PHOTO[k]).catch(function () {}); }); }, make: make, endGrain: endGrain, url: url, endURL: endURL, avg: avg, isDark: function (id) { return !!(P[id] && P[id].dk); }, noise: noise, hash: hash };
 })();
